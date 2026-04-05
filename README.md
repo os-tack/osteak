@@ -135,12 +135,7 @@ The minimum supported Rust version is **1.86.0** (same as ratatui 0.30).
 
 ## License
 
-Licensed under either of
-
-- [Apache License, Version 2.0](LICENSE-APACHE)
-- [MIT License](LICENSE-MIT)
-
-at your option.
+[MIT](LICENSE-MIT)
 
 ## Contributing
 
