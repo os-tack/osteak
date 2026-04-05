@@ -1,0 +1,12 @@
+{"id": 1, "title": "Define and stabilize Tea trait API", "status": "open", "priority": "p0", "tags": ["core", "api"], "created": "2026-04-05"}
+{"id": 2, "title": "Write example app — counter", "status": "open", "priority": "p0", "tags": ["example", "validation"], "created": "2026-04-05"}
+{"id": 3, "title": "Write example app — multi-pane", "status": "open", "priority": "p1", "tags": ["example", "validation"], "created": "2026-04-05"}
+{"id": 4, "title": "Optional runner for simple apps", "status": "open", "priority": "p1", "tags": ["runner", "convenience"], "created": "2026-04-05"}
+{"id": 5, "title": "Subscription integration with tokio channels", "status": "open", "priority": "p1", "tags": ["subscriptions", "tokio"], "created": "2026-04-05"}
+{"id": 6, "title": "Action::Task spawning patterns", "status": "open", "priority": "p1", "tags": ["async", "documentation"], "created": "2026-04-05"}
+{"id": 7, "title": "Dirty tracking optimization", "status": "open", "priority": "p2", "tags": ["performance", "rendering"], "created": "2026-04-05"}
+{"id": 8, "title": "Nested/composed views", "status": "open", "priority": "p2", "tags": ["composition", "patterns"], "created": "2026-04-05"}
+{"id": 9, "title": "Integration test with ratatui test backend", "status": "open", "priority": "p2", "tags": ["testing", "ci"], "created": "2026-04-05"}
+{"id": 10, "title": "Port ostk fcp-screen to osteak", "status": "open", "priority": "p1", "tags": ["integration", "haystack"], "created": "2026-04-05"}
+{"id": 11, "title": "Publish to crates.io", "status": "open", "priority": "p2", "tags": ["release", "packaging"], "created": "2026-04-05"}
+{"id": 12, "title": "Document the overrun bug pattern", "status": "open", "priority": "p1", "tags": ["documentation", "motivation"], "created": "2026-04-05"}
