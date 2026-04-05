@@ -1,2 +1,9 @@
 /target
 Cargo.lock
+.DS_Store
+.ostk/
+.claude/
+.mcp.json
+*.bail
+*.swp
+*.swo
