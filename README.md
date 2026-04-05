@@ -5,9 +5,7 @@
 [![CI](https://github.com/os-tack/osteak/actions/workflows/ci.yml/badge.svg)](https://github.com/os-tack/osteak/actions/workflows/ci.yml)
 [![License](https://img.shields.io/crates/l/osteak.svg)](LICENSE-MIT)
 
-**TEA (The Elm Architecture) for [ratatui](https://ratatui.rs) — you keep the event loop.**
-
-osteak brings centralized state management to ratatui apps without taking control away from you.
+**Elm for [ratatui](https://ratatui.rs) — you bring the loop.**
 
 ## Why osteak?
 
@@ -122,6 +120,7 @@ cargo add osteak --no-default-features
 
 - [`counter`](examples/counter.rs) — minimal app with the built-in runner
 - [`counter_manual`](examples/counter_manual.rs) — same app, hand-written event loop
+- [`async_tasks`](examples/async_tasks.rs) — `Cmd::task` with `tokio::spawn` in a manual loop
 - [`multi_pane`](examples/multi_pane.rs) — model composition with `Cmd::map`
 
 ```sh

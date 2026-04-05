@@ -92,6 +92,28 @@ impl<Msg> Cmd<Msg> {
         }
     }
 
+    /// Mark the view dirty and perform an action.
+    ///
+    /// Use this when you have a pre-built [`Action`] and want to mark
+    /// the view as needing a re-render. For the common case of spawning
+    /// an async task, prefer [`Cmd::task`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use osteak::{Action, Cmd};
+    ///
+    /// let action = Action::task(async { "done".to_string() });
+    /// let cmd = Cmd::dirty_with_action(action);
+    /// assert!(cmd.dirty);
+    /// ```
+    pub fn dirty_with_action(action: Action<Msg>) -> Self {
+        Cmd {
+            action,
+            dirty: true,
+        }
+    }
+
     /// Perform an action with explicit dirty control.
     pub fn with_action(action: Action<Msg>, dirty: bool) -> Self {
         Cmd { action, dirty }

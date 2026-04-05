@@ -1,8 +1,8 @@
 #![warn(missing_docs)]
 #![forbid(unsafe_code)]
-//! # osteak — TEA (The Elm Architecture) for ratatui
+//! # osteak — Elm for ratatui
 //!
-//! You keep your event loop. osteak provides the structure.
+//! You bring the loop. osteak brings the structure.
 //!
 //! ## The Problem
 //!
