@@ -95,6 +95,13 @@ use ratatui::Frame;
 /// - [`init`](Tea::init) — return an [`Action`] to run at startup (default: no-op).
 /// - [`subscriptions`](Tea::subscriptions) — return active [`Sub`]scriptions
 ///   for external event sources (default: none).
+///
+/// # Terminal Ownership
+///
+/// Your model must **not** own the `Terminal`. Keep the terminal in your
+/// event loop and pass the [`Frame`] to [`view`](Tea::view) via
+/// `terminal.draw(|f| model.view(f))`. This separation is enforced by the
+/// borrow checker and is the universal ratatui pattern.
 pub trait Tea {
     /// The message type — everything that can happen in your app.
     ///
