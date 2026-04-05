@@ -5,22 +5,14 @@
 [![CI](https://github.com/os-tack/osteak/actions/workflows/ci.yml/badge.svg)](https://github.com/os-tack/osteak/actions/workflows/ci.yml)
 [![License](https://img.shields.io/crates/l/osteak.svg)](LICENSE-MIT)
 
-**Elm for [ratatui](https://ratatui.rs) — you bring the loop.**
+Elm Architecture for ratatui. We built this because our TUI kept
+accumulating state bugs as it grew — booleans disagreeing, async
+tasks outliving the UI state that spawned them, the usual. TEA
+fixed it for us. Maybe it helps you too.
 
-## Why osteak?
-
-Every ratatui app that grows past demo complexity hits the "bag of booleans"
-wall — state scattered across fields, implicit transitions, race conditions
-when async work outlives UI signals.
-
-| | osteak | ratatui-elm | teatui | tui-realm |
-|---|---|---|---|---|
-| ratatui 0.30 | **yes** | no (0.29) | no (0.29) | no (0.29) |
-| You keep event loop | **yes** | no | no | no |
-| `&mut` update (no clone) | **yes** | yes | no | n/a |
-| Full `Frame` access | **yes** | yes | no | yes |
-| Async task integration | **yes** | no | own runtime | n/a |
-| Dirty tracking | **yes** | no | no | no |
+You bring the event loop. osteak gives you `update`, `view`, and
+a `Cmd` type to describe side effects. There's an optional runner
+if you don't have a loop yet.
 
 ## Quick Start
 
@@ -58,6 +50,16 @@ impl Tea for Counter {
 ### With the built-in runner
 
 ```rust,no_run
+# use osteak::{Tea, Cmd};
+# use ratatui::Frame;
+# use ratatui::widgets::Paragraph;
+# struct Counter { count: i32 }
+# enum Msg { Increment, Decrement, Quit }
+# impl Tea for Counter {
+#     type Msg = Msg;
+#     fn update(&mut self, msg: Msg) -> Cmd<Msg> { Cmd::none() }
+#     fn view(&mut self, frame: &mut Frame) {}
+# }
 use crossterm::event::{Event, KeyCode, KeyEventKind};
 
 #[tokio::main]
@@ -77,40 +79,40 @@ async fn main() -> std::io::Result<()> {
 
 ### Without the runner
 
-You always have the option to write your own event loop — osteak never takes
-control away. See [`examples/counter_manual.rs`](examples/counter_manual.rs).
+Write your own loop — osteak doesn't take control.
+See [`examples/counter_manual.rs`](examples/counter_manual.rs).
 
 ## Architecture
 
 ```text
-                    ┌──────────────────────┐
-                    │    Your Event Loop    │
-                    │  (or osteak::runner)  │
-                    └──────┬───────────────┘
-                           │ Msg
-                    ┌──────▼───────────────┐
-                    │   Tea::update(&mut)   │
-                    │   → Cmd { action,     │
-                    │         dirty }       │
-                    └──────┬───────────────┘
-                           │
-              ┌────────────┼────────────┐
-              │            │            │
-        Action::Task  Action::None  Action::Quit
-        (you spawn)   (no-op)       (exit loop)
-              │
-              │ Msg (on completion)
-              └──────────► back to update
+    ┌──────────────────────┐
+    │    Your Event Loop    │
+    │  (or osteak::runner)  │
+    └──────┬───────────────┘
+           │ Msg
+    ┌──────▼───────────────┐
+    │   Tea::update(&mut)   │
+    │   → Cmd { action,     │
+    │         dirty }       │
+    └──────┬───────────────┘
+           │
+  ┌────────┼────────┐
+  │        │        │
+Task     None     Quit
+(you spawn)
+  │
+  │ Msg (on completion)
+  └──────► back to update
 ```
 
 ## Features
 
 | Feature | Default | Description |
 |---------|---------|-------------|
-| `crossterm-backend` | yes | Crossterm terminal backend + `EventStream` |
-| `tokio-runtime` | yes | Tokio integration for the runner module |
+| `crossterm-backend` | yes | Crossterm backend + `EventStream` |
+| `tokio-runtime` | yes | Tokio integration for the runner |
 
-To use osteak without the runner (just the traits):
+Just the traits, no runtime:
 
 ```sh
 cargo add osteak --no-default-features
@@ -118,25 +120,19 @@ cargo add osteak --no-default-features
 
 ## Examples
 
-- [`counter`](examples/counter.rs) — minimal app with the built-in runner
-- [`counter_manual`](examples/counter_manual.rs) — same app, hand-written event loop
-- [`async_tasks`](examples/async_tasks.rs) — `Cmd::task` with `tokio::spawn` in a manual loop
-- [`multi_pane`](examples/multi_pane.rs) — model composition with `Cmd::map`
+- [`counter`](examples/counter.rs) — with the runner
+- [`counter_manual`](examples/counter_manual.rs) — hand-written event loop
+- [`async_tasks`](examples/async_tasks.rs) — `Cmd::task` + `tokio::spawn`
+- [`multi_pane`](examples/multi_pane.rs) — composition with `Cmd::map`
 
 ```sh
 cargo run --example counter
-cargo run --example counter_manual
-cargo run --example multi_pane
 ```
 
 ## MSRV
 
-The minimum supported Rust version is **1.86.0** (same as ratatui 0.30).
+1.86.0 (same as ratatui 0.30).
 
 ## License
 
 [MIT](LICENSE-MIT)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
