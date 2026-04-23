@@ -246,12 +246,19 @@ mod inner {
             // Start new subscriptions.
             for sub in desired {
                 if active.contains_key(sub.id) {
+                    // Already running — drop the Sub. For a `Sub::lazy`,
+                    // the factory is NEVER invoked: resource acquisition
+                    // is gated on spawn, not description. This is the
+                    // whole point of `Sub::lazy`.
                     continue;
                 }
                 let tx = task_tx.clone();
                 let id = sub.id;
+                // `into_stream()` consumes the Sub and (for lazy Subs)
+                // invokes the factory — exactly once, only here, only on
+                // the spawn path.
+                let mut stream = sub.into_stream();
                 let handle = tokio::spawn(async move {
-                    let mut stream = sub.stream;
                     while let Some(msg) = StreamExt::next(&mut stream).await {
                         if tx.send(msg).is_err() {
                             break;

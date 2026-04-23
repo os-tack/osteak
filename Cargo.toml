@@ -1,6 +1,6 @@
 [package]
 name = "osteak"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2024"
 rust-version = "1.86.0"
 description = "Elm for ratatui — you bring the loop"
